@@ -1,0 +1,26 @@
+#targets:
+#  $default:
+#    sources:
+#      - "lib/**"
+#      - "testBddReport/**"
+#    builders:
+#      bdd_test_generator|bdd_test:
+#        enabled: true
+
+builders:
+  bdd_reporter:
+    target: ":bdd_test_generator"
+    import: "package:bdd_test_generator/reporter_gen/builder.dart"
+    builder_factories: ["bddReporter"]
+    build_extensions: {".dart": [".g.html"]}
+    auto_apply: root_package
+    build_to: source
+    applies_builders: ["source_gen|combining_builder"]
+  testfile_generator:
+    target: ":testfile_generator"
+    import: "package:bdd_test_generator/testfile_generator.dart"
+    builder_factories: ["testGeneratorBuilder"]
+    build_extensions: {".dart": ["bdd_test.dart"]}
+    auto_apply: dependents
+    build_to: source
+    applies_builders: ["source_gen|combining_builder"]
